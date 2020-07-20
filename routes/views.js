@@ -10,9 +10,14 @@ const express = require('express');
 
 const router = express.Router();
 
-//Login Page Route
-router.get('/login', (req, res) => {
+// * Login Page Route
+router.get('/login', (req, res, next) => {
   res.render('login', { user: req.user });
+});
+
+// * Home Page Route
+router.get('/home', (req, res, next) => {
+  res.render('home');
 });
 
 module.exports = router;
