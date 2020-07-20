@@ -5,3 +5,7 @@
  * Authors: AK Hanish <akhanish7@gmail.com>, Revanth Nemani <revanth@tailbuds.com>
  * Inquiry and support: dev@tailbuds.com
  */
+
+const express = require('express');
+
+const router = express.Router();

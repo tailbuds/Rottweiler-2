@@ -37,14 +37,21 @@ if (process.env.NODE_ENV === 'production') {
 const sequelize = require('./config/database');
 
 // * Importing models
+// TODO
 
 // * Importing routers
+const authRoute = require('./routes/auth');
+const viewsRoute = require('./routes/views');
 
 // * Importing controllers
+// TODO
 const errorController = require('./controllers/error');
 
 // * Initializing express app
 const app = express();
+
+// * Template Engine for testing
+app.set('view engine', 'ejs');
 
 // * Helmet to protect against well known vulnerabilities by setting appropriate HTTP headers
 app.use(helmet());
@@ -65,9 +72,17 @@ app.use(cors());
 // * Compress all routes
 app.use(compression());
 
+// * Make images folder publicly accessible
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 // * express body-parser settings
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// TODO: Routes
+
+// * Views Route
+app.use(viewsRoute);
 
 // * Error Route
 app.use(errorController.get404);
