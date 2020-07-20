@@ -16,7 +16,7 @@ router.get('/login', (req, res, next) => {
 });
 
 // * Home Page Route
-router.get('/home', (req, res, next) => {
+router.get('', (req, res, next) => {
   res.render('home');
 });
 
