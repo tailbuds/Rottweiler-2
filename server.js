@@ -14,6 +14,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
+const passport = require('passport');
 
 // * Importing environment variable
 require('dotenv').config();
@@ -37,6 +38,7 @@ if (process.env.NODE_ENV === 'production') {
 const sequelize = require('./config/database');
 
 // * Importing models
+const User = require('./models/user');
 // TODO
 
 // * Importing routers
@@ -44,7 +46,6 @@ const authRoute = require('./routes/auth');
 const viewsRoute = require('./routes/views');
 
 // * Importing controllers
-// TODO
 const errorController = require('./controllers/error');
 
 // * Initializing express app
@@ -79,7 +80,14 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// * Initialize passport
+//app.use(passport.initialize());
+//app.use(passport.session());
+
 // TODO: Routes
+
+// * Auth Route
+//app.use(authRoute);
 
 // * Views Route
 app.use(viewsRoute);
