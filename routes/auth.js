@@ -12,6 +12,7 @@ const router = express.Router();
 
 const passport = require('passport');
 
+// * Google AUTH
 router.get(
   '/auth/google/',
   passport.authenticate('google', {
@@ -29,6 +30,18 @@ router.get(
   function (req, res) {
     // Successful authentication, redirect home.
     res.redirect('/login');
+  }
+);
+
+// * Facebook AUTH
+
+router.get('/auth/facebook/', passport.authenticate('facebook'));
+
+router.get(
+  '/return',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  (req, res) => {
+    res.redirect('/');
   }
 );
 
