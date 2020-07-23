@@ -81,13 +81,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // * Initialize passport
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
+require('./controllers/auth/googleAuth')(passport);
 
 // TODO: Routes
 
 // * Auth Route
-//app.use(authRoute);
+app.use(authRoute);
 
 // * Views Route
 app.use(viewsRoute);

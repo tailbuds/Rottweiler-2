@@ -47,9 +47,12 @@ const User = sequelize.define('user', {
       return '00000'.substring(0, 6 - res.length) + res;
     },
   },
-  //   referredBy: {},
-  //   googleId: {},
-  //   facebookId: {},
+  referredBy: {
+    type: Sequelize.STRING(255),
+    allowNull: true,
+  },
+  googleId: { type: Sequelize.STRING(255), allowNull: true },
+  facebookId: { type: Sequelize.STRING(255), allowNull: true },
   createdAt: {
     type: 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP',
     allowNull: true,

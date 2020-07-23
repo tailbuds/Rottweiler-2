@@ -25,16 +25,11 @@ if (process.env.NODE_ENV === 'production') {
   dbConfig = config.production;
 }
 
-const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
-  {
-    host: dbConfig.host,
-    port: dbConfig.port,
-    dialect: 'mysql',
-    logging: false,
-  }
-);
+const sequelize = new Sequelize('authnew', 'root', 'hanish123', {
+  host: 'localhost',
+  port: '3306',
+  dialect: 'mysql',
+  //logging: false,
+});
 
 module.exports = sequelize;
