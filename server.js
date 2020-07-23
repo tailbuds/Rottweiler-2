@@ -84,6 +84,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 require('./controllers/auth/googleAuth')(passport);
+require('./controllers/auth/facebookAuth')(passport);
 
 // TODO: Routes
 
