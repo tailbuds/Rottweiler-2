@@ -14,18 +14,14 @@ const passport = require('passport');
 
 // * Google AUTH
 router.get(
-  '/auth/google/',
+  '',
   passport.authenticate('google', {
-    scope: [
-      'https://www.googleapis.com/auth/plus.login',
-      ,
-      'https://www.googleapis.com/auth/plus.profile.emails.read',
-    ],
+    scope: ['profile', 'https://www.googleapis.com/auth/user.birthday.read'],
   })
 );
 
 router.get(
-  '/auth/google/callback',
+  '/auth/google/redirect',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function (req, res) {
     // Successful authentication, redirect home.
@@ -35,14 +31,14 @@ router.get(
 
 // * Facebook AUTH
 
-router.get('/auth/facebook/', passport.authenticate('facebook'));
+// router.get('/auth/facebook/', passport.authenticate('facebook'));
 
-router.get(
-  '/return',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.redirect('/');
-  }
-);
+// router.get(
+//   '/return',
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   (req, res) => {
+//     res.redirect('/');
+//   }
+// );
 
 module.exports = router;

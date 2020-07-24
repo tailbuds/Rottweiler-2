@@ -43,7 +43,7 @@ const User = require('./models/user');
 
 // * Importing routers
 const authRoute = require('./routes/auth');
-const viewsRoute = require('./routes/views');
+//const viewsRoute = require('./routes/views');
 
 // * Importing controllers
 const errorController = require('./controllers/error');
@@ -84,7 +84,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 require('./controllers/auth/googleAuth')(passport);
-require('./controllers/auth/facebookAuth')(passport);
+//require('./controllers/auth/facebookAuth')(passport);
 
 // TODO: Routes
 
@@ -92,7 +92,7 @@ require('./controllers/auth/facebookAuth')(passport);
 app.use(authRoute);
 
 // * Views Route
-app.use(viewsRoute);
+//app.use(viewsRoute);
 
 // * Error Route
 app.use(errorController.get404);

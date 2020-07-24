@@ -25,7 +25,7 @@ const User = sequelize.define('user', {
   },
   email: {
     type: Sequelize.STRING(135),
-    allowNull: false,
+    allowNull: true,
     field: 'email',
   },
   emailVerified: {
@@ -33,6 +33,10 @@ const User = sequelize.define('user', {
     allowNull: false,
     defaultValue: false,
     field: 'emailVerified',
+  },
+  profileImage: {
+    type: Sequelize.TEXT,
+    allowNull: true,
   },
   //   password: {},
   referralCode: {
@@ -51,8 +55,15 @@ const User = sequelize.define('user', {
     type: Sequelize.STRING(255),
     allowNull: true,
   },
-  googleId: { type: Sequelize.STRING(255), allowNull: true },
-  facebookId: { type: Sequelize.STRING(255), allowNull: true },
+  googleId: {
+    type: Sequelize.STRING(255),
+    allowNull: true,
+    field: 'googleId',
+  },
+  facebookId: {
+    type: Sequelize.STRING(255),
+    allowNull: true,
+  },
   createdAt: {
     type: 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP',
     allowNull: true,
