@@ -35,9 +35,11 @@ module.exports = (passport) => {
   });
 
   passport.deserializeUser((id, done) => {
-    let user = User.findOne({ where: { googleId: id } });
-    done(null, user);
+    let user = User.findOne({ where: { googleId: id } }).then((user) => {
+      done(null, user);
+    });
   });
+
   const apiKey = process.env.DEV_API_KEY;
 
   passport.use(
@@ -56,36 +58,36 @@ module.exports = (passport) => {
         const profilePicture = profile._json.picture;
         console.log(name + id + profilePicture);
 
-        app.get(
-          `https://people.googleapis.com/v1/people/${id}?personFields=birhtdays&key=${apiKey}&access_token=${accessToken}`,
-          (req, res, next) => {
-            console.log(res.body);
-          }
-        );
+        // app.get(
+        //   `https://people.googleapis.com/v1/people/${id}?personFields=birhtdays&key=${apiKey}&access_token=${accessToken}`,
+        //   (req, res, next) => {
+        //     console.log(res.body);
+        //   }
+        // );
 
-        // User.findOne({ where: { googleId: id } })
-        //   .then((user) => {
-        //     if (user) {
-        //       console.log('User Already Exist');
-        //       done(null, response[0]);
-        //     } else {
-        //       User.create({
-        //         name: name,
-        //         googleId: id,
-        //         //profileImage: profilePicture,
-        //         //emailVerified: true,
-        //       })
-        //         .then((res) => {
-        //           console.log('User Added');
-        //         })
-        //         .catch((err) => {
-        //           console.log(err);
-        //         });
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
+        User.findOne({ where: { googleId: id } })
+          .then((user) => {
+            if (user) {
+              console.log('User Already Exist');
+              done(null, response[0]);
+            } else {
+              User.create({
+                name: name,
+                googleId: id,
+                profileImage: profilePicture,
+                emailVerified: true,
+              })
+                .then((res) => {
+                  console.log('User Added');
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     )
   );

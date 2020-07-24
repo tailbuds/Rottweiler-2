@@ -55,7 +55,7 @@ const User = sequelize.define('user', {
     type: Sequelize.STRING(255),
     allowNull: true,
   },
-  googleId: {
+  googleid: {
     type: Sequelize.STRING(255),
     allowNull: true,
     field: 'googleId',
