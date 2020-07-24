@@ -50,21 +50,25 @@ module.exports = (passport) => {
       },
       (accessToken, refreshToken, profile, done) => {
         // passport callback function
-        console.log('passport callback function fired:');
+        //  console.log(profile);
         const name = profile.displayName;
         const id = profile.id;
         const profilePicture = profile._json.picture;
+        const email = profile._json.email;
+        const emailVerified = profile._json.email_verified;
 
         axios
           .get(
-            `https://people.googleapis.com/v1/people/${id}?personFields=birthdays&key=${apiKey}&access_token=${accessToken}`
+            `https://people.googleapis.com/v1/people/${id}?personFields=birthdays,genders&key=${apiKey}&access_token=${accessToken}`
           )
           .then((res) => {
+            const gender = res.data.genders[0].value;
             const date = res.data.birthdays[0].date;
             const birthday = `${date.year}-${date.month}-${date.day}`;
-            return birthday;
+            console.log(birthday);
+            return { birthday: birthday, gender: gender };
           })
-          .then((birthday) => {
+          .then((userData) => {
             User.findOne({ where: { googleId: id } })
               .then((user) => {
                 if (user) {
@@ -76,7 +80,9 @@ module.exports = (passport) => {
                     googleId: id,
                     profileImage: profilePicture,
                     emailVerified: true,
-                    birthday: birthday,
+                    email: email,
+                    birthday: userData.birthday,
+                    gender: userData.gender,
                   })
                     .then((res) => {
                       console.log('User Added');

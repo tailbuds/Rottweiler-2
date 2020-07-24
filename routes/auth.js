@@ -19,14 +19,19 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/login' }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/login');
+    res.redirect('/');
   }
 );
 
 router.get(
   '/auth/google',
   passport.authenticate('google', {
-    scope: ['profile', 'https://www.googleapis.com/auth/user.birthday.read'],
+    scope: [
+      'profile',
+      'https://www.googleapis.com/auth/user.birthday.read',
+      'email',
+      'https://www.googleapis.com/auth/user.gender.read',
+    ],
   })
 );
 // * Facebook AUTH
