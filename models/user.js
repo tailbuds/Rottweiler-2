@@ -29,7 +29,7 @@ const User = sequelize.define('user', {
     field: 'email',
   },
   birthday: {
-    type: Sequelize.DATE,
+    type: 'DATE',
     allowNull: true,
     field: 'birthday',
   },

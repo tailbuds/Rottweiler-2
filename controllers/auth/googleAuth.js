@@ -51,11 +51,9 @@ module.exports = (passport) => {
       (accessToken, refreshToken, profile, done) => {
         // passport callback function
         console.log('passport callback function fired:');
-        console.log(profile);
         const name = profile.displayName;
         const id = profile.id;
         const profilePicture = profile._json.picture;
-        console.log(accessToken);
 
         axios
           .get(
@@ -64,31 +62,33 @@ module.exports = (passport) => {
           .then((res) => {
             const date = res.data.birthdays[0].date;
             const birthday = `${date.year}-${date.month}-${date.day}`;
-            console.log(birthday);
+            return birthday;
           })
-          .catch((err) => {
-            console.log(err);
-          });
-
-        User.findOne({ where: { googleId: id } })
-          .then((user) => {
-            if (user) {
-              console.log('User Already Exist');
-              done(null, user);
-            } else {
-              User.create({
-                name: name,
-                googleId: id,
-                profileImage: profilePicture,
-                emailVerified: true,
+          .then((birthday) => {
+            User.findOne({ where: { googleId: id } })
+              .then((user) => {
+                if (user) {
+                  console.log('User Already Exist');
+                  done(null, user);
+                } else {
+                  User.create({
+                    name: name,
+                    googleId: id,
+                    profileImage: profilePicture,
+                    emailVerified: true,
+                    birthday: birthday,
+                  })
+                    .then((res) => {
+                      console.log('User Added');
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }
               })
-                .then((res) => {
-                  console.log('User Added');
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            }
+              .catch((err) => {
+                console.log(err);
+              });
           })
           .catch((err) => {
             console.log(err);
