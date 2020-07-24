@@ -38,24 +38,24 @@ const User = sequelize.define('user', {
     type: Sequelize.TEXT,
     allowNull: true,
   },
-  //   password: {},
-  referralCode: {
-    type: Sequelize.STRING(255),
-    allowNull: false,
-    defaultValue: () => {
-      let hash = 0;
-      for (let i = 0; i < this.email.length; i++) {
-        hash = this.email.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      let res = (hash & 0x00ffffff).toString(16).toUpperCase();
-      return '00000'.substring(0, 6 - res.length) + res;
-    },
-  },
+  // password: {},
+  // referralCode: {
+  //   type: Sequelize.STRING(255),
+  //   allowNull: false,
+  //   defaultValue: (email) => {
+  //     let hash = 0;
+  //     for (let i = 0; i < email.length; i++) {
+  //       hash = email.charCodeAt(i) + ((hash << 5) - hash);
+  //     }
+  //     let res = (hash & 0x00ffffff).toString(16).toUpperCase();
+  //     return '00000'.substring(0, 6 - res.length) + res;
+  //   },
+  // },
   referredBy: {
     type: Sequelize.STRING(255),
     allowNull: true,
   },
-  googleid: {
+  googleId: {
     type: Sequelize.STRING(255),
     allowNull: true,
     field: 'googleId',

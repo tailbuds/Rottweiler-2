@@ -9,7 +9,7 @@ const express = require('express');
 const app = express();
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require('../../models/user');
+const { User } = require('../../models/user');
 
 // * Importing environment letiable
 require('dotenv').config();
@@ -56,20 +56,19 @@ module.exports = (passport) => {
         const name = profile.displayName;
         const id = profile.id;
         const profilePicture = profile._json.picture;
-        console.log(name + id + profilePicture);
 
-        // app.get(
-        //   `https://people.googleapis.com/v1/people/${id}?personFields=birhtdays&key=${apiKey}&access_token=${accessToken}`,
-        //   (req, res, next) => {
-        //     console.log(res.body);
-        //   }
-        // );
+        app.get(
+          `https://people.googleapis.com/v1/people/${id}?personFields=birhtdays&key=${apiKey}&access_token=${accessToken}`,
+          (req, res, next) => {
+            console.log(res.body);
+          }
+        );
 
         User.findOne({ where: { googleId: id } })
           .then((user) => {
             if (user) {
               console.log('User Already Exist');
-              done(null, response[0]);
+              done(null, user);
             } else {
               User.create({
                 name: name,

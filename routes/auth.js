@@ -13,12 +13,6 @@ const router = express.Router();
 const passport = require('passport');
 
 // * Google AUTH
-router.get(
-  '',
-  passport.authenticate('google', {
-    scope: ['profile', 'https://www.googleapis.com/auth/user.birthday.read'],
-  })
-);
 
 router.get(
   '/auth/google/redirect',
@@ -29,6 +23,12 @@ router.get(
   }
 );
 
+router.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'https://www.googleapis.com/auth/user.birthday.read'],
+  })
+);
 // * Facebook AUTH
 
 // router.get('/auth/facebook/', passport.authenticate('facebook'));
