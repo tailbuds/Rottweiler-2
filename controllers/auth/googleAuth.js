@@ -5,8 +5,7 @@
  * Authors: AK Hanish <akhanish7@gmail.com>, Revanth Nemani <revanth@tailbuds.com>
  * Inquiry and support: dev@tailbuds.com
  */
-const express = require('express');
-const app = express();
+const axios = require('axios');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { User } = require('../../models/user');
@@ -56,13 +55,20 @@ module.exports = (passport) => {
         const name = profile.displayName;
         const id = profile.id;
         const profilePicture = profile._json.picture;
+        console.log(accessToken);
 
-        app.get(
-          `https://people.googleapis.com/v1/people/${id}?personFields=birhtdays&key=${apiKey}&access_token=${accessToken}`,
-          (req, res, next) => {
-            console.log(res.body);
-          }
-        );
+        axios
+          .get(
+            `https://people.googleapis.com/v1/people/${id}?personFields=birthdays&key=${apiKey}&access_token=${accessToken}`
+          )
+          .then((res) => {
+            const date = res.data.birthdays[0].date;
+            const birthday = `${date.year}-${date.month}-${date.day}`;
+            console.log(birthday);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
 
         User.findOne({ where: { googleId: id } })
           .then((user) => {

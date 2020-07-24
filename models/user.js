@@ -28,6 +28,11 @@ const User = sequelize.define('user', {
     allowNull: true,
     field: 'email',
   },
+  birthday: {
+    type: Sequelize.DATE,
+    allowNull: true,
+    field: 'birthday',
+  },
   emailVerified: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
