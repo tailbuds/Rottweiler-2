@@ -10,7 +10,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { User } = require('../../models/user');
 
-// * Importing environment letiable
+// * Importing environment variables
 require('dotenv').config();
 
 let GOOGLE_CLIENT_ID;
