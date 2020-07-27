@@ -45,9 +45,51 @@ module.exports = (passport) => {
         clientID: FACEBOOK_CLIENT_ID,
         clientSecret: FACEBOOK_CLIENT_SECRET,
         callbackURL: '/facebook/redirect',
+        profileFields: [
+          'email',
+          'id',
+          'first_name',
+          'gender',
+          'last_name',
+          'picture',
+          'birthday',
+        ],
       },
       (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
+        const name = profile._json.first_name + ' ' + profile._json.last_name;
+        const id = profile.id;
+        const profilePicture = profile.photos[0].value;
+        const email = profile._json.email;
+        //const emailVerified = true;
+        const date = profile._json.birthday.split('/');
+        const birthday = date[2] + '-' + date[0] + '-' + date[1];
+
+        User.findOne({ where: { facebookId: id } })
+          .then((user) => {
+            if (user) {
+              console.log('User Already Exist');
+              done(null, user);
+            } else {
+              User.create({
+                name: name,
+                facebookId: id,
+                profileImage: profilePicture,
+                emailVerified: true,
+                email: email,
+                birthday: birthday,
+                //gender: userData.gender,
+              })
+                .then((res) => {
+                  console.log('User Added');
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     )
   );
