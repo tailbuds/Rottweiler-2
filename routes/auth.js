@@ -36,14 +36,19 @@ router.get(
 );
 // * Facebook AUTH
 
-// router.get('/auth/facebook/', passport.authenticate('facebook'));
+router.get(
+  '/auth/facebook',
+  passport.authenticate('facebook', {
+    scope: ['email', 'user_birthday'],
+  })
+);
 
-// router.get(
-//   '/return',
-//   passport.authenticate('facebook', { failureRedirect: '/login' }),
-//   (req, res) => {
-//     res.redirect('/');
-//   }
-// );
+router.get(
+  '/facebook/redirect',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  (req, res) => {
+    res.redirect('/');
+  }
+);
 
 module.exports = router;

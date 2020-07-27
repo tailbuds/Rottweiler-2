@@ -7,19 +7,36 @@
  */
 
 const passport = require('passport');
-var Strategy = require('passport-facebook').Strategy;
-const User = require('../../models/user');
+const Strategy = require('passport-facebook').Strategy;
+const { User } = require('../../models/user');
 
-// * Importing environment letiable
+// * Importing environment variables
 require('dotenv').config();
 
+let GOOGLE_CLIENT_ID;
+let GOOGLE_CLIENT_SECRET;
+if (process.env.NODE_ENV === 'development') {
+  GOOGLE_CLIENT_ID = process.env.DEV_GOOGLE_CLIENT_ID;
+  GOOGLE_CLIENT_SECRET = process.env.DEV_GOOGLE_CLIENT_SECRET;
+}
+if (process.env.NODE_ENV === 'test') {
+  GOOGLE_CLIENT_ID = process.env.TEST_GOOGLE_CLIENT_ID;
+  GOOGLE_CLIENT_SECRET = process.env.TEST_GOOGLE_CLIENT_SECRET;
+}
+if (process.env.NODE_ENV === 'production') {
+  GOOGLE_CLIENT_ID = process.env.PROD_GOOGLE_CLIENT_ID;
+  GOOGLE_CLIENT_SECRET = process.env.PROD_GOOGLE_CLIENT_SECRET;
+}
+
 module.exports = (passport) => {
-  passport.serializeUser(function (user, cb) {
-    cb(null, user);
+  passport.serializeUser((profile, done) => {
+    done(null, profile);
   });
 
-  passport.deserializeUser(function (obj, cb) {
-    cb(null, obj);
+  passport.deserializeUser((id, done) => {
+    let user = User.findOne({ where: { facebookId: id } }).then((user) => {
+      done(null, user);
+    });
   });
 
   passport.use(
@@ -27,10 +44,10 @@ module.exports = (passport) => {
       {
         clientID: process.env['FACEBOOK_CLIENT_ID'],
         clientSecret: process.env['FACEBOOK_CLIENT_SECRET'],
-        callbackURL: '/return',
+        callbackURL: '/facebook/redirect',
       },
-      (accessToken, refreshToken, profile, cb) => {
-        return cb(null, profile);
+      (accessToken, refreshToken, profile, done) => {
+        console.log(profile);
       }
     )
   );
