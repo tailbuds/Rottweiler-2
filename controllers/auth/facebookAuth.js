@@ -13,19 +13,19 @@ const { User } = require('../../models/user');
 // * Importing environment variables
 require('dotenv').config();
 
-let GOOGLE_CLIENT_ID;
-let GOOGLE_CLIENT_SECRET;
+let FACEBOOK_CLIENT_ID;
+let FACEBOOK_CLIENT_SECRET;
 if (process.env.NODE_ENV === 'development') {
-  GOOGLE_CLIENT_ID = process.env.DEV_GOOGLE_CLIENT_ID;
-  GOOGLE_CLIENT_SECRET = process.env.DEV_GOOGLE_CLIENT_SECRET;
+  FACEBOOK_CLIENT_ID = process.env.DEV_FACEBOOK_CLIENT_ID;
+  FACEBOOK_CLIENT_SECRET = process.env.DEV_FACEBOOK_CLIENT_SECRET;
 }
 if (process.env.NODE_ENV === 'test') {
-  GOOGLE_CLIENT_ID = process.env.TEST_GOOGLE_CLIENT_ID;
-  GOOGLE_CLIENT_SECRET = process.env.TEST_GOOGLE_CLIENT_SECRET;
+  FACEBOOK_CLIENT_ID = process.env.TEST_FACEBOOK_CLIENT_ID;
+  FACEBOOK_CLIENT_SECRET = process.env.TEST_FACEBOOK_CLIENT_SECRET;
 }
 if (process.env.NODE_ENV === 'production') {
-  GOOGLE_CLIENT_ID = process.env.PROD_GOOGLE_CLIENT_ID;
-  GOOGLE_CLIENT_SECRET = process.env.PROD_GOOGLE_CLIENT_SECRET;
+  FACEBOOK_CLIENT_ID = process.env.PROD_FACEBOOK_CLIENT_ID;
+  FACEBOOK_CLIENT_SECRET = process.env.PROD_FACEBOOK_CLIENT_SECRET;
 }
 
 module.exports = (passport) => {
@@ -42,8 +42,8 @@ module.exports = (passport) => {
   passport.use(
     new Strategy(
       {
-        clientID: process.env['FACEBOOK_CLIENT_ID'],
-        clientSecret: process.env['FACEBOOK_CLIENT_SECRET'],
+        clientID: FACEBOOK_CLIENT_ID,
+        clientSecret: FACEBOOK_CLIENT_SECRET,
         callbackURL: '/facebook/redirect',
       },
       (accessToken, refreshToken, profile, done) => {
