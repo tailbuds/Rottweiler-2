@@ -28,6 +28,10 @@ const User = sequelize.define('user', {
     allowNull: true,
     field: 'email',
   },
+  password: {
+    type: Sequelize.STRING(135),
+    allowNull: true,
+  },
   gender: {
     type: Sequelize.STRING(20),
     allowNull: true,

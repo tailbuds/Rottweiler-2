@@ -15,6 +15,8 @@ const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
 const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 // * Importing environment variable
 require('dotenv').config();
@@ -33,6 +35,8 @@ if (process.env.NODE_ENV === 'production') {
   HOST = process.env.PROD_APP_HOST;
   PORT = process.env.PROD_APP_PORT;
 }
+// * Importing passport config
+require('./config/passport')(passport);
 
 // * Importing database config
 const sequelize = require('./config/database');
@@ -80,11 +84,26 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true,
+}));
+
 // * Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
 require('./controllers/auth/googleAuth')(passport);
 require('./controllers/auth/facebookAuth')(passport);
+
+app.use(flash());
+
+//Global variables
+app.use((req,res,next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error');
+  next();
+});
 
 // TODO: Routes
 

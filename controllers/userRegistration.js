@@ -1,4 +1,6 @@
-exports.userRegisteration = (req,res,next) => {
+const bcrypt = require('bcryptjs');
+
+exports.userRegistration = (req,res,next) => {
     const {name, username, password, confirm, phone} = req.body;
 
     let error = [];

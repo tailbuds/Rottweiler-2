@@ -30,11 +30,14 @@
   "homepage": "https://github.com/tailbuds/Rottweiler-2#readme",
   "dependencies": {
     "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
+    "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "helmet": "^3.23.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
@@ -42,6 +45,7 @@
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0",
     "sequelize": "^6.3.3"
   },
   "devDependencies": {
