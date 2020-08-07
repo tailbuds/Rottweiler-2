@@ -35,10 +35,13 @@ exports.userRegistration = (req,res,next) => {
             if (user) {
               console.log('User Already Exist');
             } else {
+                const salt = bcrypt.genSaltSync(10);
+                const hashPassword = bcrypt.hashSync(password, salt);
               User.create({
                 name: name,
                 email: email,
-                password: password
+                password: hashPassword,
+                emailVerified: true
               })
                 .then((res) => {
                   console.log('User Added');
@@ -51,5 +54,6 @@ exports.userRegistration = (req,res,next) => {
           .catch((err) => {
             console.log(err);
           });
-    }
+
+        }
 }

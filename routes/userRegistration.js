@@ -18,7 +18,7 @@ router.get('/welcome', (req, res, next) =>{
 });
 
 router.get('/create',(req, res, next) => {
-    res.render('/loginpage');
+    res.render('loginpage');
 });
 
 router.post('/create', userRegistration); 
