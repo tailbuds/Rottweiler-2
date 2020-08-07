@@ -65,13 +65,13 @@
 </head>
 
 <body>
-    <%- include('partials/messages.ejs') %>
+    <%- include('includes/messages.ejs') %>
     <nav>
         <ul>
             <% if (user) { %>
             <li><a href="/logout">Log out</a></li>
             <% } else { %>
-            <li><a href="/login">Login</a></li>
+            <li><a href="/loginpage">Login</a></li>
             <% } %>
             <li><a href="/">Homepage</a></li>
             <li><a href="/profile">Profile</a></li>

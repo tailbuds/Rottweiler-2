@@ -50,7 +50,7 @@ module.exports = (passport) => {
       },
       (accessToken, refreshToken, profile, done) => {
         // passport callback function
-        //  console.log(profile);
+        // console.log(profile);
         const name = profile.displayName;
         const id = profile.id;
         const profilePicture = profile._json.picture;

@@ -1,10 +1,12 @@
 const bcrypt = require('bcryptjs');
 
+const { User } = require('../models/user');
+
 exports.userRegistration = (req,res,next) => {
-    const {name, username, password, confirm, phone} = req.body;
+    const {name, email, password, confirm, phone} = req.body;
 
     let error = [];
-    if(!name || !username || !password || !confirm || !phone)
+    if(!name || !email || !password || !confirm || !phone)
     {
         error.push({msg : "Please fill all the fieds"});
     }
@@ -21,47 +23,33 @@ exports.userRegistration = (req,res,next) => {
         res.render('signup',{
         error,
         name,
-        username,
+        email,
         password,
         confirm,
         phone});
     }
     else
     {
-        User.findOne({username: username})
-        .then(users => {
-            if(users){
-                error.push({msg: "Email already exists"});
-                res.render('signup',{
-                    error,
-                    name,
-                    username,
-                    password,
-                    confirm,
-                    phone});
-            }
-            else{
-                const newuser = new User({
-                    name,
-                    username,
-                    password,
-                    phone
+        User.findOne({ where: { email: email } })
+          .then((user) => {
+            if (user) {
+              console.log('User Already Exist');
+            } else {
+              User.create({
+                name: name,
+                email: email,
+                password: password
+              })
+                .then((res) => {
+                  console.log('User Added');
+                })
+                .catch((err) => {
+                  console.log(err);
                 });
-
-                bcrypt.genSalt(10, (err,salt) => 
-                bcrypt.hash(newuser.password,salt,(err, hash) =>{
-                    if(err) throw err;
-
-                    newuser.password = hash;
-
-                    newuser.save().
-                    then(users => {
-                        req.flash('success_msg', 'You are now registered and can log in');
-                        res.redirect('/');
-                    })
-                    .catch(err => console.log(err))
-                }))
             }
-        });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     }
 }

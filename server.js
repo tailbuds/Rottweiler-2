@@ -48,6 +48,7 @@ const User = require('./models/user');
 // * Importing routers
 const authRoute = require('./routes/auth');
 const viewsRoute = require('./routes/views');
+const userRegistrationRoute = require('./routes/userRegistration');
 
 // * Importing controllers
 const errorController = require('./controllers/error');
@@ -112,6 +113,9 @@ app.use(authRoute);
 
 // * Views Route
 app.use(viewsRoute);
+
+// * User Registration Route
+app.use(userRegistrationRoute);
 
 // * Error Route
 app.use(errorController.get404);
