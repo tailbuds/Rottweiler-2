@@ -35,8 +35,6 @@ if (process.env.NODE_ENV === 'production') {
   HOST = process.env.PROD_APP_HOST;
   PORT = process.env.PROD_APP_PORT;
 }
-// * Importing passport config
-require('./config/passport')(passport);
 
 // * Importing database config
 const sequelize = require('./config/database');
@@ -48,7 +46,6 @@ const User = require('./models/user');
 // * Importing routers
 const authRoute = require('./routes/auth');
 const viewsRoute = require('./routes/views');
-const userRegistrationRoute = require('./routes/userRegistration');
 
 // * Importing controllers
 const errorController = require('./controllers/error');
@@ -85,11 +82,13 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true,
-}));
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 // * Initialize passport
 app.use(passport.initialize());
@@ -100,7 +99,7 @@ require('./controllers/auth/facebookAuth')(passport);
 app.use(flash());
 
 //Global variables
-app.use((req,res,next) => {
+app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error');
   next();
@@ -113,9 +112,6 @@ app.use(authRoute);
 
 // * Views Route
 app.use(viewsRoute);
-
-// * User Registration Route
-app.use(userRegistrationRoute);
 
 // * Error Route
 app.use(errorController.get404);

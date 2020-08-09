@@ -5,7 +5,6 @@
  * Authors: AK Hanish <akhanish7@gmail.com>, Revanth Nemani <revanth@tailbuds.com>
  * Inquiry and support: dev@tailbuds.com
  */
-const axios = require('axios');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { User } = require('../../models/user');
@@ -57,44 +56,26 @@ module.exports = (passport) => {
         const email = profile._json.email;
         const emailVerified = profile._json.email_verified;
 
-        axios
-          .get(
-            `https://people.googleapis.com/v1/people/${id}?personFields=birthdays,genders&key=${apiKey}&access_token=${accessToken}`
-          )
-          .then((res) => {
-            const gender = res.data.genders[0].value;
-            const date = res.data.birthdays[0].date;
-            const birthday = `${date.year}-${date.month}-${date.day}`;
-            console.log(birthday);
-            return { birthday: birthday, gender: gender };
-          })
-          .then((userData) => {
-            User.findOne({ where: { googleId: id } })
-              .then((user) => {
-                if (user) {
-                  console.log('User Already Exist');
-                  done(null, user);
-                } else {
-                  User.create({
-                    name: name,
-                    googleId: id,
-                    profileImage: profilePicture,
-                    emailVerified: true,
-                    email: email,
-                    birthday: userData.birthday,
-                    gender: userData.gender,
-                  })
-                    .then((res) => {
-                      console.log('User Added');
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                }
+        User.findOne({ where: { googleId: id } })
+          .then((user) => {
+            if (user) {
+              console.log('User Already Exist');
+              done(null, user);
+            } else {
+              User.create({
+                name: name,
+                googleId: id,
+                profileImage: profilePicture,
+                emailVerified: true,
+                email: email,
               })
-              .catch((err) => {
-                console.log(err);
-              });
+                .then((res) => {
+                  console.log('User Added');
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
           })
           .catch((err) => {
             console.log(err);

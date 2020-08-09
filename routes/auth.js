@@ -12,6 +12,9 @@ const router = express.Router();
 
 const passport = require('passport');
 
+const auth = require('../controllers/auth/traditionalAuth');
+const jwtVerify = require('../controllers/auth/jwt');
+const verifySignUp = require('../controllers/auth/validator');
 // * Google AUTH
 
 router.get(
@@ -26,12 +29,7 @@ router.get(
 router.get(
   '/auth/google',
   passport.authenticate('google', {
-    scope: [
-      'profile',
-      'https://www.googleapis.com/auth/user.birthday.read',
-      'email',
-      'https://www.googleapis.com/auth/user.gender.read',
-    ],
+    scope: ['profile', 'email'],
   })
 );
 // * Facebook AUTH
@@ -50,5 +48,13 @@ router.get(
     res.redirect('/');
   }
 );
+
+// * Traditional AUTH
+
+// * Login Route
+router.post('/login/traditional', auth.signIn);
+
+//* SignUp route
+router.post('/signup/new', verifySignUp.checkDuplicateEmail, auth.signUp);
 
 module.exports = router;
