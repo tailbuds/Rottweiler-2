@@ -64,10 +64,25 @@ module.exports = (passport) => {
         const date = profile._json.birthday.split('/');
         const birthday = date[2] + '-' + date[0] + '-' + date[1];
 
-        User.findOne({ where: { facebookId: id } })
+        User.findOne({ where: { email: email } })
           .then((user) => {
             if (user) {
-              console.log('User Already Exist');
+              user.update({
+                name: name,
+                facebookId: id,
+                profileImage: profilePicture,
+                emailVerified: true,
+                email: email,
+                birthday: birthday,
+                //gender: userData.gender,
+              })
+                .then((res) => {
+                  console.log('User updated');
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              // console.log('User Already Exist');
               done(null, user);
             } else {
               User.create({

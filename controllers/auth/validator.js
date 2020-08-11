@@ -6,19 +6,30 @@
  * Inquiry and support: dev@tailbuds.com
  */
 
-const User = require('../../models/user');
+const { User } = require('../../models/user');
+const bcrypt = require('bcryptjs');
 
 const checkDuplicateEmail = (req, res, next) => {
   User.findOne({ where: { email: req.body.email } })
     .then((user) => {
-      if (user) {
-        res.status(400).send({
-          message: 'Failed! Email already Exist',
+      if(user)
+      {
+          user.update({
+          name: req.body.name,
+          email: req.body.email,
+          password: bcrypt.hashSync(req.body.password, 12),
         });
-        return;
+        return
       }
       next();
     })
+      // if (user) {
+      //   res.status(400).send({
+      //     message: 'Failed! Email already Exist',
+      //   });
+      //   return;
+      // }
+      // next();
     .catch((err) => {
       console.log(err);
     });
